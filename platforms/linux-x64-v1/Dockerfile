@@ -59,7 +59,7 @@ RUN \
 ENV \
   PKG_CONFIG="pkg-config --static" \
   PLATFORM="linux-x64-v1" \
-  FLAGS="-march=x86_64" \
+  FLAGS="-march=x86-64" \
   RUSTFLAGS="-Zlocation-detail=none -Zfmt-debug=none" \
   MESON="--cross-file=/root/meson.ini"
 
