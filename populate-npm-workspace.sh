@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -e
 
+set -x
+
 # Dependency version numbers
 source ./versions.properties
 
@@ -53,25 +55,21 @@ remove_unused() {
 }
 
 # Download and extract per-platform binaries
-PLATFORMS=$(ls platforms --ignore=win32*)
+PLATFORMS="linux-x64-v1"
 for platform in $PLATFORMS; do
   extract "$platform"
 done
-for platform in arm64v8 ia32 x64; do
-  extract "win32-$platform"
-done
-extract "dev-wasm32"
+
 
 # Common header and source files
-cp -r npm/linux-x64/{include,versions.json,THIRD-PARTY-NOTICES.md} npm/dev/
-cp -r npm/win32-x64/include npm/dev/
+cp -r npm/linux-x64-v1/{include,versions.json,THIRD-PARTY-NOTICES.md} npm/dev/
 find npm/dev/include/ -maxdepth 1 -type f -links +1 -delete
 for source in VConnection VError VImage VInterpolate VRegion vips-operators; do
   download_cpp "$source"
 done;
 
 # Generate README files
-PACKAGES=$(jq -r '.workspaces[]' "npm/package.json")
+PACKAGES="linux-x64-v1"
 for package in $PACKAGES; do
   generate_readme "$package"
   generate_index "$package"
